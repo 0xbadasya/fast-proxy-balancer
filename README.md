@@ -4,8 +4,7 @@
 
 ![npm](https://img.shields.io/npm/v/fast-proxy-balancer?color=blue)
 ![downloads](https://img.shields.io/npm/dm/fast-proxy-balancer?label=npm%20downloads)
-![license](https://img.shields.io/github/license/your-name/fast-proxy-balancer)
-![build](https://img.shields.io/github/actions/workflow/status/your-name/fast-proxy-balancer/ci.yml?branch=main)
+![license](https://img.shields.io/github/license/0xbadasya/fast-proxy-balancer)
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/0xbadasya/fast-proxy-balancer/main/assets/logo.png" width="180" alt="fast-proxy-balancer logo" />
