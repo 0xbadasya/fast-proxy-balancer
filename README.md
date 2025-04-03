@@ -296,5 +296,5 @@ MIT
 
 ## 💪 Author
 
-Built by badasya — PRs and stars welcome ⭐
+Built by [badasya](https://github.com/0xbadasya) — PRs and stars welcome ⭐
 
