@@ -2,14 +2,10 @@
 
 > Supports any proxy type compatible with `proxy-agent`, including `http`, `https`, `socks`, `socks4`, `socks5`, and PAC URLs.
 
-<p align="center">
+
 ![npm](https://img.shields.io/npm/v/fast-proxy-balancer?color=blue)
 ![license](https://img.shields.io/github/license/0xbadasya/fast-proxy-balancer)
-</p>
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/0xbadasya/fast-proxy-balancer/main/assets/logo.png" width="180" alt="fast-proxy-balancer logo" />
-</p>
 
 A powerful and flexible proxy balancing library for Node.js. Designed to intelligently manage, test, and select the best proxy from a pool based on performance and reliability.
 
