@@ -1,6 +1,6 @@
 {
   "name": "fast-proxy-balancer",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Smart and flexible proxy balancer for Node.js",
   "main": "src/ProxyBalancer.js",
   "type": "module",
