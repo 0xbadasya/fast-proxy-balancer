@@ -1,0 +1,32 @@
+{
+  "name": "fast-proxy-balancer",
+  "version": "1.0.0",
+  "description": "Smart and flexible proxy balancer for Node.js",
+  "main": "src/ProxyBalancer.js",
+  "type": "module",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": ["proxy", "balancer", "proxy-manager", "proxy-agent"],
+  "author": "badasya",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/0xbadasya/fast-proxy-balancer"
+  },
+  "bugs": {
+    "url": "https://github.com/0xbadasya/fast-proxy-balancer/issues"
+  },
+  "homepage": "https://github.com/0xbadasya/fast-proxy-balancer#readme",
+  "devDependencies": {
+    "@babel/core": "^7.26.10",
+    "@babel/preset-env": "^7.26.9",
+    "babel-jest": "^29.7.0",
+    "jest": "^29.7.0"
+  },
+  "dependencies": {
+    "axios": "^1.8.4",
+    "https-proxy-agent": "^7.0.6",
+    "proxy-agent": "^6.5.0"
+  }
+}
