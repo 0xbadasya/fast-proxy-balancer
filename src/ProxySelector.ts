@@ -1,4 +1,11 @@
-function sortProxies(proxies) {
+import type { Proxy } from './interfaces/interfaces.js';
+
+/**
+ * Sorts proxies by lowest latency first, then by fewest failures.
+ * @param proxies - Array of Proxy objects
+ * @returns Sorted array of proxies
+ */
+export function sortProxies(proxies: Proxy[]): Proxy[] {
   return proxies.slice().sort((a, b) => {
     const aLatency = isFinite(a.latency) ? a.latency : Number.MAX_VALUE;
     const bLatency = isFinite(b.latency) ? b.latency : Number.MAX_VALUE;
@@ -9,9 +16,7 @@ function sortProxies(proxies) {
     if (aLatency !== bLatency) {
       return aLatency - bLatency;
     }
-    
+
     return aFailures - bFailures;
   });
 }
-
-export { sortProxies };

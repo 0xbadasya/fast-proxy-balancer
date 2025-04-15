@@ -1,13 +1,20 @@
 import axios from 'axios';
 import { log } from './utils/logger.js';
+import { createAgent } from './utils/createAgent.js';
+import type { Proxy } from './interfaces/interfaces.js';
 
-async function testProxy(proxy, testUrl, testTimeout) {
+
+
+export async function testProxy(
+  proxy: Proxy,
+  testUrl: string,
+  testTimeout: number
+): Promise<void> {
   log(`Testing proxy: ${proxy.url}`);
   const start = Date.now();
+
   try {
-    const { default: proxyAgentDefault } = await import('proxy-agent');
-    const createProxyAgent = proxyAgentDefault.ProxyAgent;
-    const agent = new createProxyAgent(proxy.url); 
+    const agent = await createAgent(proxy.url);
 
     const response = await axios.get(testUrl, {
       timeout: testTimeout,
@@ -22,10 +29,11 @@ async function testProxy(proxy, testUrl, testTimeout) {
     proxy.latency = Date.now() - start;
     proxy.failures = 0;
     log(`✅ Proxy ${proxy.url} passed with latency: ${proxy.latency}ms`);
-  } catch (err) {
+  } catch (err: any) {
     proxy.failures += 1;
     proxy.latency = Infinity;
     log(`❌ Proxy ${proxy.url} failed. Errors: ${proxy.failures}`, 'error');
+
     if (err.response) {
       log(`Response error: ${err.response.status}`, 'error');
     } else if (err.request) {
@@ -35,5 +43,3 @@ async function testProxy(proxy, testUrl, testTimeout) {
     }
   }
 }
-
-export { testProxy };

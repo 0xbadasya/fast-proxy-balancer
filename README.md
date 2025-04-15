@@ -1,26 +1,24 @@
 # fast-proxy-balancer
 
-> Supports any proxy type compatible with `proxy-agent`, including `http`, `https`, `socks`, `socks4`, `socks5`, and PAC URLs.
-
+> TypeScript-ready, fast, and extensible proxy balancer using `proxy-agent`. Supports all proxy types: `http`, `https`, `socks`, PAC, and more.
 
 ![npm](https://img.shields.io/npm/v/fast-proxy-balancer?color=blue)
 ![license](https://img.shields.io/github/license/0xbadasya/fast-proxy-balancer)
 
-
-A powerful and flexible proxy balancing library for Node.js. Designed to intelligently manage, test, and select the best proxy from a pool based on performance and reliability.
+**Smart and flexible proxy balancer for Node.js**, written in TypeScript. Automatically selects the best proxy based on performance. Built-in testing, failure handling, real-time stats, and CLI/debug tooling.
 
 ---
 
 ## 🚀 Features
 
-- ✅ **Auto-test proxies** (latency + connectivity)
-- ⚖️ **Smart selection** of best proxy
-- ⏳ **Failure tolerance** and filtering
-- 🔄 **Auto-refreshing** at configurable intervals
-- 📊 **Detailed stats** for all proxies
-- ⚙️ Extensible and easy to integrate
-- 📂 Load proxies from `.txt` file or array
-- 🐛 Built-in support for `proxy-agent`
+- ✅ Auto-testing proxies (latency, connectivity)
+- ⚖️ Smart selection based on performance
+- ❌ Failure counting & exclusion logic
+- 🔁 Auto-refreshing with concurrency limit
+- 📊 Proxy stats, summaries, latency history
+- 📂 Load from array or `.txt` file
+- 🧱 Type-safe and fully written in TypeScript
+- 🔌 Works with any proxy supported by `proxy-agent`
 
 ---
 
@@ -34,26 +32,31 @@ npm install fast-proxy-balancer
 
 ## 💻 Quick Start
 
-```js
+```ts
 import { ProxyBalancer } from 'fast-proxy-balancer';
 
-// Option 1: Load from array
 const balancer = new ProxyBalancer([
   'http://proxy1.com',
   'http://proxy2.com'
-], options);
-
-// Option 2: Load from file (each proxy URL on a new line)
-const balancer = new ProxyBalancer('./proxies.txt', options);
+], {
+  testUrl: 'https://example.com',
+  refreshInterval: 30000
+});
 
 await balancer.init();
 await balancer.refreshProxies();
 
 const best = await balancer.getBestProxy();
-console.log('Best proxy:', best.url);
+console.log('🏆 Best proxy:', best.url);
 ```
 
-> 💡 Proxy file should be a plain `.txt` file, one proxy URL per line. Lines starting with `#` are ignored as comments.
+Or load proxies from a file:
+
+```ts
+const balancer = new ProxyBalancer('./proxies.txt');
+```
+
+> 💡 Text file should contain one proxy URL per line. `#` starts a comment.
 
 ---
 
@@ -66,175 +69,74 @@ console.log('Best proxy:', best.url);
 | `refreshInterval` | number   | `60000`              | Interval (ms) for automatic proxy re-testing         |
 | `concurrentTests` | number   | `5`                  | Number of proxies to test in parallel                |
 | `testUrl`         | string   | `'https://example.com'` | URL used to test proxies                         |
-| `proxyListOrFile` | array or string | Required       | List of proxy URLs or path to a file with proxies    |
 
 ---
 
-## 📊 API Reference
+## 📘 API Reference
 
 ### `await balancer.init()`
-Initializes the proxy list. Must be called after instantiation.
+Initializes the proxy list. Call before using.
 
 ### `await balancer.refreshProxies()`
-Tests all proxies concurrently, updating their latency and failure count.
+Runs latency tests, resets failures, updates metrics.
 
-### `await balancer.getBestProxy()`
-Returns the most optimal proxy based on latency and reliability:
-```js
-{
-  url: 'http://proxy2.com',
-  agent: ProxyAgentInstance
-}
-```
+### `await balancer.getBestProxy()` → `{ url, agent }`
+Returns the best proxy and its agent instance (from `proxy-agent`).
 
-### `balancer.getProxyStats()`
-Returns detailed information about all proxies:
-```js
-[
-  {
-    url: 'http://proxy1.com',
-    latency: '512 ms',
-    failures: 0,
-    lastUsed: '2025-04-03 23:22:01'
-  },
-  ...
-]
-```
+### `balancer.getProxyStats()` → `ProxyStats[]`
+Detailed stats for all proxies (latency, failures, last used).
 
-### `balancer.sortByLatency()`
-Returns all available proxies sorted by best latency.
+### `balancer.sortByLatency()` → `ProxyStats[]`
+All proxies sorted from fastest to slowest.
 
-### `balancer.getFailedProxies()`
-Returns all proxies that exceeded the `maxFailures` threshold.
+### `balancer.getFailedProxies()` → `ProxyStats[]`
+List of proxies that failed too often.
 
-### `balancer.getStatsSummary()`
-Returns an overview of the current proxy pool:
-```js
-{
-  total: 5,
-  active: 4,
-  failed: 1,
-  avgLatency: '421 ms'
-}
-```
+### `balancer.getStatsSummary()` → `{ total, active, failed, avgLatency }`
+Returns overall pool summary.
 
 ### `balancer.startAutoRefresh()`
-Starts automatic proxy testing at intervals defined by `refreshInterval`.
+Starts background auto-refresh loop based on `refreshInterval`.
 
 ---
 
-## 🧪 Testing & Coverage (planned)
+## 💡 Advanced Usage
 
-Unit tests will be added to cover:
+### 🧠 Use with axios:
 
-- Proxy testing logic (latency, failure counting)
-- Sorting, filtering and selection
-- Stats aggregation and summaries
-- Edge cases (timeouts, invalid URLs, empty lists)
-
-> Testing framework: **Jest** with **babel-jest**
-> Planned coverage: 90%+ on all core components
-
----
-
-## 🚧 Planned Features
-
-- [ ] Web dashboard with live status view
-- [ ] Web dashboard with live status view
-- [ ] Integration with Redis / database for distributed setups
-- [ ] Event hooks: `onProxyFail`, `onProxyRecovered`, etc.
-- [ ] CLI tool for manual usage
-- [ ] Auto-persistence of results to disk or JSON
-
----
-
-## 📁 Project Structure
-
-- `src/` - Core library files
-- `test/` - Manual or automated test files
-- `proxy.log` - Log file output (optional)
-
----
-
-## 📘 Contributing Guide (`CONTRIBUTING.md`)
-
----
-
-## 📜 Changelog (`CHANGELOG.md`)
-
-```markdown
-# Changelog
-
-All notable changes to this project will be documented in this file.
-
-## [1.0.0] - 2025-04-03
-### Added
-- Initial release of fast-proxy-balancer
-- Proxy list loading from array or file
-- Auto-testing and failure tracking
-- Best proxy selection and latency sorting
-- Proxy stats, summaries, and failed proxy filtering
-
-### Fixed
-- Compatibility with proxy-agent v6
+```ts
+const { agent } = await balancer.getBestProxy();
+const res = await axios.get('https://example.com', {
+  httpAgent: agent,
+  httpsAgent: agent,
+  timeout: 3000
+});
 ```
 
----
+### 🧪 Manual test
 
-## ⚙️ .npmrc
-
-```ini
-save-exact=true
-loglevel=warn
-```
-
-
-```markdown
-# Contributing to fast-proxy-balancer
-
-We welcome contributions of all kinds! Here’s how you can help:
-
-## 🛠 Fix a Bug / Submit a Feature
-- Fork the repo and create your branch (`git checkout -b feature/my-feature`)
-- Commit your changes with a clear message
-- Open a pull request and describe what you did
-
-## 📦 Install Locally
 ```bash
-npm install
-npm run dev # or a test command
-```
-
-## 💡 Coding Style
-- Use consistent formatting (Prettier / ESLint preferred)
-- Add comments where needed for clarity
-
-## 🧪 Add Tests (optional but appreciated!)
-
-Thanks for helping us build better proxy tools!
+npm run build && node dist/test/test-manual.js
 ```
 
 ---
 
-## 📜 Changelog Template (`CHANGELOG.md`)
 
-```markdown
-# Changelog
+## 🧱 Built with TypeScript
 
-All notable changes to this project will be documented in this file.
-
-## [1.0.0] - 2025-04-03
-### Added
-- Initial release
-- Proxy testing, selection, and auto-refresh
-- Stats, summaries, and failure tracking
-
-### Fixed
-- ProxyAgent compatibility with v6
-
-```
+- Full `.d.ts` typings
+- Exports included via `dist/index.d.ts`
+- Works in strict mode with ESM
 
 ---
+
+## 🚧 Roadmap
+
+- [ ] Redis support for shared state
+- [ ] Web dashboard (live updates)
+- [ ] Event hooks: `onFail`, `onRecover`, etc.
+- [ ] JSON logging/export for analytics
+- [ ] Built-in CLI
 
 ---
 
@@ -253,24 +155,51 @@ All notable changes to this project will be documented in this file.
 ```json
 {
   "name": "fast-proxy-balancer",
-  "version": "1.0.0",
-  "main": "ProxyBalancer.js",
-  "type": "module",
-  "scripts": {
-    "test": "jest"
-  },
-  "keywords": [],
-  "author": "badasya",
-  "license": "ISC",
+  "version": "1.0.2",
   "description": "Smart and flexible proxy balancer for Node.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "test": "jest",
+    "test-manual": "node dist/test/test-manual.js"
+  },
+  "keywords": [
+    "proxy",
+    "balancer",
+    "proxy-manager",
+    "proxy-agent"
+  ],
+  "author": "badasya",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/0xbadasya/fast-proxy-balancer"
+  },
+  "bugs": {
+    "url": "https://github.com/0xbadasya/fast-proxy-balancer/issues"
+  },
+  "homepage": "https://github.com/0xbadasya/fast-proxy-balancer#readme",
   "devDependencies": {
     "@babel/core": "^7.26.10",
     "@babel/preset-env": "^7.26.9",
+    "@types/chalk": "^0.4.31",
+    "@types/node": "^22.14.1",
     "babel-jest": "^29.7.0",
-    "jest": "^29.7.0"
+    "jest": "^29.7.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   },
   "dependencies": {
     "axios": "^1.8.4",
+    "chalk": "^5.4.1",
     "https-proxy-agent": "^7.0.6",
     "proxy-agent": "^6.5.0"
   }
@@ -296,5 +225,5 @@ MIT
 
 ## 💪 Author
 
-Built by [badasya](https://github.com/0xbadasya) — PRs and stars welcome ⭐
-
+Built by:
+  MIT © [badasya](https://github.com/0xbadasya) — PRs and stars welcome ⭐
