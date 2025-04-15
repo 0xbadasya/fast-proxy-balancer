@@ -150,73 +150,6 @@ npm run build && node dist/test/test-manual.js
 
 ---
 
-## 📦 package.json
-
-```json
-{
-  "name": "fast-proxy-balancer",
-  "version": "1.0.2",
-  "description": "Smart and flexible proxy balancer for Node.js",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "type": "module",
-  "files": [
-    "dist",
-    "README.md",
-    "LICENSE"
-  ],
-  "scripts": {
-    "build": "tsc",
-    "prepare": "npm run build",
-    "test": "jest",
-    "test-manual": "node dist/test/test-manual.js"
-  },
-  "keywords": [
-    "proxy",
-    "balancer",
-    "proxy-manager",
-    "proxy-agent"
-  ],
-  "author": "badasya",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/0xbadasya/fast-proxy-balancer"
-  },
-  "bugs": {
-    "url": "https://github.com/0xbadasya/fast-proxy-balancer/issues"
-  },
-  "homepage": "https://github.com/0xbadasya/fast-proxy-balancer#readme",
-  "devDependencies": {
-    "@babel/core": "^7.26.10",
-    "@babel/preset-env": "^7.26.9",
-    "@types/chalk": "^0.4.31",
-    "@types/node": "^22.14.1",
-    "babel-jest": "^29.7.0",
-    "jest": "^29.7.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
-  },
-  "dependencies": {
-    "axios": "^1.8.4",
-    "chalk": "^5.4.1",
-    "https-proxy-agent": "^7.0.6",
-    "proxy-agent": "^6.5.0"
-  }
-}
-```
-
----
-
-## 📦 npm Config (`.npmrc`)
-
-```ini
-save-exact=true
-loglevel=warn
-```
-
----
-
 ## 📃 License
 
 MIT
@@ -225,5 +158,4 @@ MIT
 
 ## 💪 Author
 
-Built by:
-  MIT © [badasya](https://github.com/0xbadasya) — PRs and stars welcome ⭐
+MIT © [badasya](https://github.com/0xbadasya) — PRs and stars welcome ⭐
